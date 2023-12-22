@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flash Cards</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        #flashcard {
+            cursor: pointer;
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: auto;
+            margin-bottom: 20px;
+            width: 300px;
+            height: 150px;
+
+        }
+
+        #flashcard:hover {
+            background-color: #f0f0f0;
+        }
+
+        #flashcard p {
+            margin: 0;
+        }
+
+        #createFlashcard {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="flashcard" onclick="flipCard()">
+        <p id="question"></p>
+        <p id="answer" style="display: none;"></p>
+    </div>
+
+    <button onclick="showRandomFlashcard()">Random</button>
+
+    <div id="createFlashcard">
+        <input type="text" id="questionInput" placeholder="Enter question">
+        <input type="text" id="answerInput" placeholder="Enter answer">
+        <button onclick="saveFlashcard()">Save Flashcard</button>
+    </div>
+
+    <div>
+        <button onclick="saveData()">Save Data</button>
+        <input type="file" id="loadInput" accept=".json" onchange="loadData()">
+    </div>
+
+    <script>
+        window.onload = function () {
+            showRandomFlashcard();
+        };
+
+        function showRandomFlashcard() {
+            const flashcards = JSON.parse(localStorage.getItem('flashcards')) || [];
+
+            if (flashcards.length === 0) {
+                document.getElementById('flashcard').innerHTML = "<p>You don't have any flash cards</p>";
+                return;
+            }
+
+            const randomIndex = Math.floor(Math.random() * flashcards.length);
+            const randomFlashcard = flashcards[randomIndex];
+
+            document.getElementById('question').innerText = randomFlashcard.question;
+            document.getElementById('answer').innerText = randomFlashcard.answer;
+            document.getElementById('answer').style.display = 'none';
+        }
+
+        function flipCard() {
+            const questionElement = document.getElementById('question');
+            const answerElement = document.getElementById('answer');
+
+            if (answerElement.style.display === 'none') {
+                answerElement.style.display = 'block';
+            } else {
+                answerElement.style.display = 'none';
+            }
+        }
+
+        function saveFlashcard() {
+            const question = document.getElementById('questionInput').value;
+            const answer = document.getElementById('answerInput').value;
+
+            if (question && answer) {
+                const flashcards = JSON.parse(localStorage.getItem('flashcards')) || [];
+                flashcards.push({ question, answer });
+                localStorage.setItem('flashcards', JSON.stringify(flashcards));
+
+                document.getElementById('questionInput').value = '';
+                document.getElementById('answerInput').value = '';
+                showRandomFlashcard(); // Show a random flashcard after saving
+            }
+        }
+
+        function saveData() {
+            const data = localStorage.getItem('flashcards');
+            const blob = new Blob([data], { type: 'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'flashcards.json';
+            a.click();
+        }
+
+        function loadData() {
+            const input = document.getElementById('loadInput');
+            const file = input.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const jsonData = e.target.result;
+                    localStorage.setItem('flashcards', jsonData);
+                    showRandomFlashcard(); // Show a random flashcard after loading
+                };
+                reader.readAsText(file);
+            }
+        }
+    </script>
+
+</body>
+
+</html>
