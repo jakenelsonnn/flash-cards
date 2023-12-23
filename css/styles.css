@@ -1,5 +1,12 @@
 body {
     text-align: center;
+    background-color: black;
+    color: white;
+}
+
+button {
+    background-color: rgba(0, 255, 157, 0.628) !important;
+    border-color: rgba(0, 255, 157, 0.628)!important;
 }
 
 #flashcard {
@@ -24,7 +31,7 @@ body {
 }
 
 #flashcard:hover {
-    background-color: #f0f0f0;
+    background-color: #353535;
 }
 
 #flashcard p {
