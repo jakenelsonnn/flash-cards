@@ -5,132 +5,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flash Cards</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-
-        #flashcard {
-            cursor: pointer;
-            border: 1px solid #ccc;
-            padding: 20px;
-            margin: auto;
-            margin-bottom: 20px;
-            width: 300px;
-            height: 150px;
-
-        }
-
-        #flashcard:hover {
-            background-color: #f0f0f0;
-        }
-
-        #flashcard p {
-            margin: 0;
-        }
-
-        #createFlashcard {
-            margin-top: 20px;
-        }
-
-        #question {
-            font-weight: bold;
-        }
-    </style>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
 
 <body>
+    <div class="container">
+        <h2>Flash Cards</h2>
+        <div id="flashcard" onclick="flipCard()">
+            <p id="question"></p><br />
+            <p id="answer" style="display: none;"></p>
+        </div>
 
-    <div id="flashcard" onclick="flipCard()">
-        <p id="question"></p><br/>
-        <p id="answer" style="display: none;"></p>
+        <div class="container">
+            <button type="button" id="randomButton" class="btn btn-primary"
+                onclick="showRandomFlashcard()">Random</button>
+
+            <div class="section-divider"></div>
+
+            <div id="createFlashcard">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <textarea class="form-control" id="questionInput" rows="3"
+                            placeholder="Enter question"></textarea>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <textarea class="form-control" id="answerInput" rows="3" placeholder="Enter answer"></textarea>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <button type="button" class="btn btn-primary" onclick="saveFlashcard()">Save Flashcard</button>
+                </div>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <div>
+                <button onclick="saveData()" type="button" class="btn btn-primary">Save Data</button><br />
+                <div class="mb-3">
+                    <label for="loadInput" class="form-label">Upload Flashcard Data</label>
+                    <input type="file" id="loadInput" accept=".json" onchange="loadData()" class="form-control">
+                    <div id="fileHelp" class="form-text">Choose a file to upload.</div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <button onclick="showRandomFlashcard()">Random</button>
-
-    <div id="createFlashcard">
-        <input type="text" id="questionInput" placeholder="Enter question">
-        <input type="text" id="answerInput" placeholder="Enter answer">
-        <button onclick="saveFlashcard()">Save Flashcard</button>
-    </div>
-
-    <div>
-        <button onclick="saveData()">Save Data</button>
-        <input type="file" id="loadInput" accept=".json" onchange="loadData()">
-    </div>
-
-    <script>
-        window.onload = function () {
-            showRandomFlashcard();
-        };
-
-        function showRandomFlashcard() {
-            const flashcards = JSON.parse(localStorage.getItem('flashcards')) || [];
-
-            if (flashcards.length === 0) {
-                document.getElementById('flashcard').innerHTML = "<p>You don't have any flash cards</p>";
-                return;
-            }
-
-            const randomIndex = Math.floor(Math.random() * flashcards.length);
-            const randomFlashcard = flashcards[randomIndex];
-
-            document.getElementById('question').innerText = randomFlashcard.question;
-            document.getElementById('answer').innerText = randomFlashcard.answer;
-            document.getElementById('answer').style.display = 'none';
-        }
-
-        function flipCard() {
-            const questionElement = document.getElementById('question');
-            const answerElement = document.getElementById('answer');
-
-            if (answerElement.style.display === 'none') {
-                answerElement.style.display = 'block';
-            } else {
-                answerElement.style.display = 'none';
-            }
-        }
-
-        function saveFlashcard() {
-            const question = document.getElementById('questionInput').value;
-            const answer = document.getElementById('answerInput').value;
-
-            if (question && answer) {
-                const flashcards = JSON.parse(localStorage.getItem('flashcards')) || [];
-                flashcards.push({ question, answer });
-                localStorage.setItem('flashcards', JSON.stringify(flashcards));
-
-                document.getElementById('questionInput').value = '';
-                document.getElementById('answerInput').value = '';
-                showRandomFlashcard(); // Show a random flashcard after saving
-            }
-        }
-
-        function saveData() {
-            const data = localStorage.getItem('flashcards');
-            const blob = new Blob([data], { type: 'application/json' });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = 'flashcards.json';
-            a.click();
-        }
-
-        function loadData() {
-            const input = document.getElementById('loadInput');
-            const file = input.files[0];
-
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    const jsonData = e.target.result;
-                    localStorage.setItem('flashcards', jsonData);
-                    showRandomFlashcard(); // Show a random flashcard after loading
-                };
-                reader.readAsText(file);
-            }
-        }
-    </script>
+    <script type="text/javascript" src="js/code.js"></script>
 
 </body>
 

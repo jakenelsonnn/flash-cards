@@ -1,0 +1,40 @@
+body {
+    text-align: center;
+}
+
+#flashcard {
+    cursor: pointer;
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin: auto;
+    margin-bottom: 20px;
+    width: 600px;
+    height: 300px;
+
+}
+
+.section-divider {
+    border-bottom: 2px solid #ddd;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+}
+
+#randomButton {
+    margin: auto;
+}
+
+#flashcard:hover {
+    background-color: #f0f0f0;
+}
+
+#flashcard p {
+    margin: 0;
+}
+
+#createFlashcard {
+    margin-top: 20px;
+}
+
+#question {
+    font-weight: bold;
+}
