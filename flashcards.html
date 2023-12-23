@@ -13,6 +13,7 @@
 <body>
     <div class="container">
         <h2>Flash Cards</h2>
+        <p>Click to show or hide the answer.</p>
         <div id="flashcard" onclick="flipCard()">
             <p id="question"></p><br />
             <p id="answer" style="display: none;"></p>
@@ -25,6 +26,7 @@
             <div class="section-divider"></div>
 
             <div id="createFlashcard">
+                <p>Add a new flash card:</p>
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <textarea class="form-control" id="questionInput" rows="3"
@@ -48,7 +50,7 @@
                 <div class="section-divider"></div>
 
                 <div class="mb-3">
-                    <p>Upload the flash card data from a JSON file:</p>
+                    <p>Upload flash card data from a JSON file:</p>
                     <input type="file" id="loadInput" accept=".json" onchange="loadData()" class="form-control">
                 </div>
             </div>
