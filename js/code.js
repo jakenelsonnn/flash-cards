@@ -45,13 +45,16 @@ function saveFlashcard() {
 }
 
 function saveData() {
-    const data = localStorage.getItem('flashcards');
-    const blob = new Blob([data], { type: 'application/json' });
+    const flashcards = JSON.parse(localStorage.getItem('flashcards')) || [];
+    const formattedData = '[' + flashcards.map(card => JSON.stringify(card)).join(",\n") + ']';
+    
+    const blob = new Blob([formattedData], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
     a.download = 'flashcards.json';
     a.click();
 }
+
 
 function loadData() {
     const input = document.getElementById('loadInput');
