@@ -1,3 +1,5 @@
+var currentFlashCardIndex = 0;
+
 window.onload = function () {
     showRandomFlashcard();
 };
@@ -11,12 +13,52 @@ function showRandomFlashcard() {
     }
 
     const randomIndex = Math.floor(Math.random() * flashcards.length);
+    currentFlashCardIndex = randomIndex;
     const randomFlashcard = flashcards[randomIndex];
 
     document.getElementById('question').innerText = randomFlashcard.question;
     document.getElementById('answer').innerText = randomFlashcard.answer;
     document.getElementById('answer').style.display = 'none';
 }
+
+function showNextFlashcard() {
+    const flashcards = JSON.parse(localStorage.getItem('flashcards')) || [];
+
+    if (flashcards.length === 0) {
+        document.getElementById('flashcard').innerHTML = "<p>You don't have any flash cards</p>";
+        return;
+    }
+
+    currentFlashCardIndex++;
+    if (currentFlashCardIndex > flashcards.length) {
+        currentFlashCardIndex = 0;
+    }
+
+    const currentFlashCard = flashcards[currentFlashCardIndex];
+    document.getElementById('question').innerText = currentFlashCard.question;
+    document.getElementById('answer').innerText = currentFlashCard.answer;
+    document.getElementById('answer').style.display = 'none';
+}
+
+function showPreviousFlashcard() {
+    const flashcards = JSON.parse(localStorage.getItem('flashcards')) || [];
+
+    if (flashcards.length === 0) {
+        document.getElementById('flashcard').innerHTML = "<p>You don't have any flash cards</p>";
+        return;
+    }
+
+    currentFlashCardIndex--;
+    if (currentFlashCardIndex < 0) {
+        currentFlashCardIndex = flashcards.length;
+    }
+
+    const currentFlashCard = flashcards[currentFlashCardIndex];
+    document.getElementById('question').innerText = currentFlashCard.question;
+    document.getElementById('answer').innerText = currentFlashCard.answer;
+    document.getElementById('answer').style.display = 'none';
+}
+
 
 function flipCard() {
     const questionElement = document.getElementById('question');
@@ -40,7 +82,7 @@ function saveFlashcard() {
 
         document.getElementById('questionInput').value = '';
         document.getElementById('answerInput').value = '';
-        showRandomFlashcard(); // Show a random flashcard after saving
+        // showRandomFlashcard(); // Show a random flashcard after saving
     }
 }
 
